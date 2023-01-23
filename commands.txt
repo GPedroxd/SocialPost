@@ -1,0 +1,2 @@
+docker run -it -d --name mongoDb -p 27017:27017 --network dockernetwork --restart always -v mongodb_data_contairner:/data/db mongo:latest
+docker run -d --name sql --network dockernetwork --restart always  -e "ACCEPT_EULA=Y" -e "SQL_PASSWORD=s4nh4f0rt3" -e "MSSQL=Express" -p 1433:1433 mcr.microsoft.com/mssql/server:2017-latest-ubuntu
