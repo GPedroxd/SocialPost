@@ -1,13 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <ItemGroup>
+    <ProjectReference Include="..\SP.Commands.Domain\SP.Commands.Domain.csproj" />
+    <ProjectReference Include="..\..\Core\SP.Core\SP.Core.csproj" />
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="MediaTr" Version="11.1.0" />
-  </ItemGroup>
 
 </Project>
