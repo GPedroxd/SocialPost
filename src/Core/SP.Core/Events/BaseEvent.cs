@@ -11,7 +11,7 @@ public abstract record BaseEvent : IBaseEvent
 
     public DateTime OccurredOn => DateTime.UtcNow;
 
-    public int Version => 1;
+    public int Version { get; set; } = -1;
 
     public string? Type { get; }
 } 
