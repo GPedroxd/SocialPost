@@ -7,7 +7,7 @@ public abstract record BaseEvent : IBaseEvent
         Type = type;
     }
 
-    public Guid Id => Guid.NewGuid();
+    public Guid Id { get; set; } = Guid.NewGuid();
 
     public DateTime OccurredOn => DateTime.UtcNow;
 
