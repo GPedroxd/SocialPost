@@ -3,7 +3,7 @@ using SP.Core.Commands;
 
 namespace SP.Commands.Application.Commands;
 
-public class LikePostCommand : BaseCommand<Unit>
+public class LikePostCommand : IBaseCommand
 {
-
+    public Guid Id => Guid.NewGuid();
 }

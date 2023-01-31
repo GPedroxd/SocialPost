@@ -3,8 +3,10 @@ using SP.Core.Commands;
 
 namespace SP.Commands.Application.Commands;
 
-public class AddCommentCommand : BaseCommand<Unit>
+public class AddCommentCommand : IBaseCommand
 {
     public string? Comment { get; set; }
     public string? UserName{ get; set; }
+
+    public Guid Id => Guid.NewGuid();
 }
