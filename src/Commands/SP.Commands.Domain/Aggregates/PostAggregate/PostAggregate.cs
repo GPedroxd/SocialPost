@@ -23,10 +23,10 @@ public class PostAggregate : AggregateRoot
     public PostAggregate()
     { }
 
-    public PostAggregate(string author, string message)
+    public PostAggregate(string? author, string? message)
     { }
 
-    public PostAggregate(Guid id, string author, string message)
+    public PostAggregate(Guid id, string? author, string? message)
     { 
         Id = id;
         Author = author;
