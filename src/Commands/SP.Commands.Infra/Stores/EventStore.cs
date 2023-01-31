@@ -1,16 +1,18 @@
 using SP.Commands.Domain.Aggregates.PostAggregate;
 using SP.Core.Events;
 using SP.Core.Infra;
+using SP.Core.Producers;
 
 namespace SP.Commands.Infra.Store;
 
 public class EventStore : IEventStore
 {
     private readonly IEventRepository _eventRepository;
-
-    public EventStore(IEventRepository eventRepository)
+    private readonly IEventProducer _eventProducer;
+    public EventStore(IEventRepository eventRepository, IEventProducer eventProducer)
     {
         _eventRepository = eventRepository;
+        _eventProducer = eventProducer;
     }
 
     public async Task<List<BaseEvent>> GetEventsAsync(Guid aggregateId)
@@ -26,15 +28,16 @@ public class EventStore : IEventStore
     {
         var version = expectedVersion;
          
-        var eventsModels = new List<EventModel>();
-        
+        var topic = Environment.GetEnvironmentVariable("KAFKA_TOPIC");
+
         foreach (var @event in events)
         {
             @event.Version = ++version;
             
             var eventModel = new EventModel(aggregateId, version, @event, nameof(PostAggregate));
-        };
+            await _eventRepository.SaveAsync(eventModel);
 
-        await _eventRepository.SaveAsync(eventsModels);
+            await _eventProducer.ProduceAsync(topic, @event);
+        }
     }
 }
