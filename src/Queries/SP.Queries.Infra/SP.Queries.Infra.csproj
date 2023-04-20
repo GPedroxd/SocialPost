@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SP.Queries.Domain\SP.Queries.Domain.csproj" />
+    <ProjectReference Include="..\..\Common\SP.Common\SP.Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>
