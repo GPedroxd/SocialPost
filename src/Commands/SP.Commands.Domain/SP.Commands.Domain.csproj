@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\SP.Core\SP.Core.csproj" />
+    <ProjectReference Include="..\..\Common\SP.Common\SP.Common.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

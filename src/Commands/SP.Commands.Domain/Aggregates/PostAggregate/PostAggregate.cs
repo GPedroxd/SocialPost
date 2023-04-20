@@ -1,4 +1,4 @@
-using SP.Commands.Domain.Aggregates.PostAggregate.Events;
+using SP.Common.Events;
 using SP.Core.Domain;
 using SP.Core.Events;
 

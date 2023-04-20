@@ -1,6 +1,6 @@
-using SP.Common.Events;
+using SP.Core.Events;
 
-namespace SP.Commands.Domain.Aggregates.PostAggregate.Events;
+namespace SP.Common.Events;
 
 public record PostCreatedEvent : BaseEvent
 {

@@ -1,7 +1,6 @@
 using MediatR;
 using SP.Commands.Application.Commands;
 using SP.Commands.Domain.Aggregates.PostAggregate;
-using SP.Commands.Domain.Aggregates.PostAggregate.Events;
 using SP.Core.Handlers;
 
 namespace SP.Commands.Application.Handlers;
