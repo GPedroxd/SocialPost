@@ -1,5 +1,8 @@
+using Confluent.Kafka;
 using Microsoft.EntityFrameworkCore;
+using SP.Core.Consumers;
 using SP.Queries.Domain.Repositories;
+using SP.Queries.Infra.Consumers;
 using SP.Queries.Infra.DataAcess;
 using SP.Queries.Infra.Handlers;
 using SP.Queries.Infra.Repositories;
@@ -15,9 +18,12 @@ builder.Services.AddSingleton<DatabaseContextFactory>(new DatabaseContextFactory
 var dataContext = builder.Services.BuildServiceProvider().GetRequiredService<DatabaseContext>();
 dataContext.Database.EnsureCreated();
 
+
+builder.Services.AddScoped<IEventConsumer, EventConsumer>();
 builder.Services.AddScoped<IPostRepository, PostRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<IEventHandler, SP.Queries.Infra.Handlers.EventHandler>();
+builder.Services.Configure<ConsumerConfig>(builder.Configuration.GetSection(nameof(ConsumerConfig)));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -5,11 +5,11 @@ namespace SP.Queries.Infra.Handlers;
 
 public interface IEventHandler 
 {  
-    Task OnPostCreated(PostCreatedEvent @event);
-    Task OnMessageUpdated(MessageUpdatedEvent @event);
-    Task OnPostLiked(PostLikedEvent @event);
-    Task OnCommentAdded(PostCommentAddedEvent @event);
-    Task OnCommentUpdated(PostCommentUpdatedEvent @event);
-    Task OnCommentRemoved(PostCommentRemovedEvent @event);
-    Task OnPostDeleteEvent(PostDeletedEvent @event);
+    Task On(PostCreatedEvent @event);
+    Task On(MessageUpdatedEvent @event);
+    Task On(PostLikedEvent @event);
+    Task On(PostCommentAddedEvent @event);
+    Task On(PostCommentUpdatedEvent @event);
+    Task On(PostCommentRemovedEvent @event);
+    Task On(PostDeletedEvent @event);
 }

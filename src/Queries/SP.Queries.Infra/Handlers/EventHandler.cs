@@ -15,7 +15,7 @@ public class EventHandler : IEventHandler
         _commentRepository = commentRepository;
     }
 
-    public async Task OnCommentAdded(PostCommentAddedEvent @event)
+    public async Task On(PostCommentAddedEvent @event)
     {
         var comment = new CommentEntity
         {
@@ -29,7 +29,7 @@ public class EventHandler : IEventHandler
         await _commentRepository.CreateAsync(comment);
     }
 
-    public async Task OnCommentRemoved(PostCommentRemovedEvent @event)
+    public async Task On(PostCommentRemovedEvent @event)
     {
         var comment = await _commentRepository.GetByIdAsync(@event.CommentId);
         
@@ -38,7 +38,7 @@ public class EventHandler : IEventHandler
         await _commentRepository.DeleteAsync(comment.CommentId);
     }
 
-    public async Task OnCommentUpdated(PostCommentUpdatedEvent @event)
+    public async Task On(PostCommentUpdatedEvent @event)
     {
         var comment = await _commentRepository.GetByIdAsync(@event.CommentId);
         if(comment is null) return;
@@ -49,7 +49,7 @@ public class EventHandler : IEventHandler
         await _commentRepository.UpdateAsync(comment);
     }
 
-    public async Task OnMessageUpdated(MessageUpdatedEvent @event)
+    public async Task On(MessageUpdatedEvent @event)
     {
         var post = await _postRepository.GetByIdAsync(@event.Id);
 
@@ -60,7 +60,7 @@ public class EventHandler : IEventHandler
         await _postRepository.UpdateAsync(post);
     }
 
-    public async Task OnPostCreated(PostCreatedEvent @event)
+    public async Task On(PostCreatedEvent @event)
     {
         var post = new PostEntity
         {
@@ -73,7 +73,7 @@ public class EventHandler : IEventHandler
         await _postRepository.CreateAsync(post);
     }
 
-    public async Task OnPostDeleteEvent(PostDeletedEvent @event)
+    public async Task On(PostDeletedEvent @event)
     {
         var post = await _postRepository.GetByIdAsync(@event.Id);
 
@@ -82,7 +82,7 @@ public class EventHandler : IEventHandler
         await _postRepository.DeleteAsync(post.PostId);
     }
 
-    public async Task OnPostLiked(PostLikedEvent @event)
+    public async Task On(PostLikedEvent @event)
     {
         var post = await _postRepository.GetByIdAsync(@event.Id);
 
