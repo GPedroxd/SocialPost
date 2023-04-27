@@ -26,6 +26,8 @@ builder.Services.AddScoped<IEventHandler, SP.Queries.Infra.Handlers.EventHandler
 builder.Services.Configure<ConsumerConfig>(builder.Configuration.GetSection(nameof(ConsumerConfig)));
 
 builder.Services.AddControllers();
+builder.Services.AddHostedService<ConsumerHostedService>();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
