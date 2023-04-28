@@ -14,6 +14,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SP.Commands.Domain\SP.Commands.Domain.csproj" />
     <ProjectReference Include="..\SP.Commands.Infra\SP.Commands.Infra.csproj" />
+    <ProjectReference Include="..\SP.Commands.Application\SP.Commands.Application.csproj" />
   </ItemGroup>
 
 </Project>

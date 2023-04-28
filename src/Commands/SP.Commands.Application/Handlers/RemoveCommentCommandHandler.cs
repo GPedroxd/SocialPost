@@ -14,14 +14,12 @@ public class RemoveCommentCommandHandler : ICommandHandler<RemoveCommentCommand>
         _eventSourcingHandler = eventSourcingHandler;
     }
 
-    public async Task<Unit> Handle(RemoveCommentCommand request, CancellationToken cancellationToken)
+    public async Task Handle(RemoveCommentCommand request, CancellationToken cancellationToken)
     {
         var agg = await _eventSourcingHandler.GetByIdAsync(request.Id);
 
         agg.RemoveComment(request.CommentId);
 
         await _eventSourcingHandler.SaveAsync(agg);
-
-        return await Task.FromResult(Unit.Value);
     }
 }

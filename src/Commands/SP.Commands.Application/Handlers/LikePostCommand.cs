@@ -14,14 +14,12 @@ public class LikePostCommandHandler : ICommandHandler<LikePostCommand>
         _eventSourcingHandler = eventSourcingHandler;
     }
 
-    public async Task<Unit> Handle(LikePostCommand request, CancellationToken cancellationToken)
+    public async Task Handle(LikePostCommand request, CancellationToken cancellationToken)
     {
         var agg = await _eventSourcingHandler.GetByIdAsync(request.Id);
 
         agg.LikePost();
 
         await _eventSourcingHandler.SaveAsync(agg);
-
-        return await Task.FromResult(Unit.Value);
     }
 }

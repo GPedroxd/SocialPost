@@ -14,14 +14,12 @@ public class EditPostCommandHandler : ICommandHandler<EditPostCommand>
         _eventSourcingHandler = eventSourcingHandler;
     }
 
-    public async Task<Unit> Handle(EditPostCommand request, CancellationToken cancellationToken)
+    public async Task Handle(EditPostCommand request, CancellationToken cancellationToken)
     {
         var agg = await _eventSourcingHandler.GetByIdAsync(request.Id);
 
         agg.UpdateMessage(request.Message);
 
         await _eventSourcingHandler.SaveAsync(agg);
-
-        return await Task.FromResult(Unit.Value);
     }
 }

@@ -5,7 +5,7 @@ using SP.Core.Handlers;
 
 namespace SP.Commands.Application.Handlers;
 
-public class EditCommentCommandHandler : ICommandHandler<EditCommentCommand>
+public class EditCommentCommandHandler : IRequestHandler<EditCommentCommand>
 {
     private readonly IEventSourcingHandler<PostAggregate> _eventSourcingHandler;
 
@@ -14,14 +14,12 @@ public class EditCommentCommandHandler : ICommandHandler<EditCommentCommand>
         _eventSourcingHandler = eventSourcingHandler;
     }
 
-    public async Task<Unit> Handle(EditCommentCommand request, CancellationToken cancellationToken)
+    public async Task Handle(EditCommentCommand request, CancellationToken cancellationToken)
     {
         var agg = await _eventSourcingHandler.GetByIdAsync(request.Id);
 
         agg.UpdateComment(request.CommentId, request.Comment, request.UserName);
 
         await _eventSourcingHandler.SaveAsync(agg);
-
-        return await Task.FromResult(Unit.Value);
     }
 }

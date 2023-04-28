@@ -5,7 +5,7 @@ using SP.Core.Handlers;
 
 namespace SP.Commands.Application.Handlers;
 
-public class DeletePostCommandHandler : ICommandHandler<DeletePostCommand>
+public class DeletePostCommandHandler : IRequestHandler<DeletePostCommand>
 {
     private readonly IEventSourcingHandler<PostAggregate> _eventSourcingHandler;
 
@@ -14,14 +14,12 @@ public class DeletePostCommandHandler : ICommandHandler<DeletePostCommand>
         _eventSourcingHandler = eventSourcingHandler;
     }
 
-    public async Task<Unit> Handle(DeletePostCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeletePostCommand request, CancellationToken cancellationToken)
     {
         var agg = await _eventSourcingHandler.GetByIdAsync(request.Id);
 
         agg.Delete();
 
         await _eventSourcingHandler.SaveAsync(agg);
-
-        return await Task.FromResult(Unit.Value);
     }
 }

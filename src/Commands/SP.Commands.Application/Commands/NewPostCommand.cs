@@ -1,4 +1,3 @@
-using MediatR;
 using SP.Core.Commands;
 
 namespace SP.Commands.Application.Commands;
