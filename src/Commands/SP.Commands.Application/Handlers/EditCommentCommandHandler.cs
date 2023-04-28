@@ -5,7 +5,7 @@ using SP.Core.Handlers;
 
 namespace SP.Commands.Application.Handlers;
 
-public class EditCommentCommandHandler : IRequestHandler<EditCommentCommand>
+public class EditCommentCommandHandler : ICommandHandler<EditCommentCommand>
 {
     private readonly IEventSourcingHandler<PostAggregate> _eventSourcingHandler;
 

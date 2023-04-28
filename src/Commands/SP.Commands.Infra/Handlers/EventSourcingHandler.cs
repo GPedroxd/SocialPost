@@ -5,11 +5,11 @@ using SP.Core.Infra;
 
 namespace SP.Commands.Infra.Handlers;
 
-public class EventSourcingHandlers : IEventSourcingHandler<PostAggregate>
+public class EventSourcingHandler : IEventSourcingHandler<PostAggregate>
 {
     private readonly IEventStore _eventStore;
 
-    public EventSourcingHandlers(IEventStore eventStore)
+    public EventSourcingHandler(IEventStore eventStore)
     {
         _eventStore = eventStore;
     }

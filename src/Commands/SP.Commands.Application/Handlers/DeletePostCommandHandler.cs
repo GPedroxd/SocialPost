@@ -5,7 +5,7 @@ using SP.Core.Handlers;
 
 namespace SP.Commands.Application.Handlers;
 
-public class DeletePostCommandHandler : IRequestHandler<DeletePostCommand>
+public class DeletePostCommandHandler : ICommandHandler<DeletePostCommand>
 {
     private readonly IEventSourcingHandler<PostAggregate> _eventSourcingHandler;
 
