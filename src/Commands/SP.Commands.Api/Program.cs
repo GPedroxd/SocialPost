@@ -5,6 +5,7 @@ using SP.Commands.Application.Handlers;
 using SP.Commands.Domain.Aggregates.PostAggregate;
 using SP.Commands.Infra.Config;
 using SP.Commands.Infra.Handlers;
+using SP.Commands.Infra.MongoConfiguration;
 using SP.Commands.Infra.Producers;
 using SP.Commands.Infra.Repositories;
 using SP.Commands.Infra.Store;
@@ -15,8 +16,7 @@ using SP.Core.Producers;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//difine how will be serialize guids atributtes, in this case will be as string
-BsonSerializer.RegisterSerializer(typeof(Guid), new GuidSerializer(MongoDB.Bson.BsonType.String));
+MongoConfiguration.Config();
 
 // Add services to the container.
 builder.Services.AddScoped<IEventStore, EventStore>();

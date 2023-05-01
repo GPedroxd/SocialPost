@@ -6,5 +6,5 @@ public class NewPostCommand : IBaseCommand
 {
     public string? Author { get; set;  }
     public string? Message { get; set; }
-    public Guid Id => Guid.NewGuid();
+    public Guid Id { get; set; } = Guid.NewGuid();
 }

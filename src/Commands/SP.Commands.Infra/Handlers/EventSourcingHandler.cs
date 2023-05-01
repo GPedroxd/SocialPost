@@ -18,11 +18,12 @@ public class EventSourcingHandler : IEventSourcingHandler<PostAggregate>
     {
         var aggregate = new PostAggregate();
         var events = await _eventStore.GetEventsAsync(aggregateId);
+        var latestVersion = events.Select(s => s.Version).Max();
 
         if(events == null || !events.Any()) return aggregate;
 
         aggregate.ReplayChanges(events);
-        aggregate.Version = events.Select(s => s.Version).Max();
+        aggregate.Version = latestVersion;
 
         return aggregate;
     }
