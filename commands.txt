@@ -1,2 +1,6 @@
-docker run -it -d --name mongoDb -p 27017:27017 --network dockernetwork --restart always -v mongodb_data_contairner:/data/db mongo:latest
-docker run -d --name sql --network dockernetwork --restart always  -e "ACCEPT_EULA=Y" -e "SQL_PASSWORD=s4nh4f0rt3" -e "MSSQL=Express" -p 1433:1433 mcr.microsoft.com/mssql/server:2017-latest-ubuntu
+all docker commads should be executed from ./src folder and any path em dockerfile should considere ./src as source.
+
+docker build --rm -t sp-commands-dev:latest -f .\Commands\SP.Commands.Api\Dockerfile .
+docker build --rm -t sp-queries-dev:latest -f .\Queries\SP.Queries.Api\Dockerfile .
+
+docker compose up -d

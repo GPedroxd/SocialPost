@@ -1,37 +1,93 @@
-version: "3.4"
+version: '1.0.1'
 
 services:
+
+  mongodb:
+    image: mongo:latest
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - sp:/var/lib/sp/data
+
+  sql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    restart: always
+    environment:
+      ACCEPT_EULA: Y
+      SA_PASSWORD: S3cr3tinh0
+      MSSQL_PID: Express
+    ports:
+      - 1433:1433
+
   zookeeper:
-    image: bitnami/zookeeper
-    restart: always
-    ports:
-      - "2181:2181"
-    volumes:
-      - "zookeeper_data:/bitnami"
+    image: confluentinc/cp-zookeeper:7.3.2
+    container_name: zookeeper
     environment:
-      - ALLOW_ANONYMOUS_LOGIN=yes
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
   kafka:
-    image: bitnami/kafka
+    image: confluentinc/cp-kafka:7.3.2
+    container_name: kafka
     ports:
+    # To learn about configuring Kafka for access across networks see
+    # https://www.confluent.io/blog/kafka-client-cannot-connect-to-broker-on-aws-on-docker-etc/
       - "9092:9092"
-    restart: always
-    volumes:
-      - "kafka_data:/bitnami"
-    environment:
-      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
-      - ALLOW_PLAINTEXT_LISTENER=yes
-      - KAFKA_LISTENERS=PLAINTEXT://:9092
-      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
     depends_on:
       - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://broker:29092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+  # zookeeper:
+  #   image: bitnami/zookeeper
+  #   restart: always
+  #   ports:
+  #     - "2181:2181"
+  #   volumes:
+  #     - "zookeeper_data:/bitnami"
+  #   environment:
+  #     - ALLOW_ANONYMOUS_LOGIN=yes
 
+  # kafka:
+  #   image: bitnami/kafka
+  #   ports:
+  #     - "9092:9092"
+  #   restart: always
+  #   volumes:
+  #     - "kafka_data:/bitnami"
+  #   environment:
+  #     - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+  #     - ALLOW_PLAINTEXT_LISTENER=yes
+  #     - KAFKA_LISTENERS=PLAINTEXT://:9092
+  #     - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
+  #   depends_on:
+  #     - zookeeper
+
+  api-commands:
+    image: sp-commands-dev
+    ports:
+      - 5000:80
+    depends_on:
+      - mongodb
+      - kafka
+
+  api-queries:
+    image: sp-queries-dev
+    ports:
+      - 6000:80
+    depends_on:
+      - sql
+      - kafka
+      
 volumes:
   zookeeper_data:
     driver: local
   kafka_data:
     driver: local
-   
-networks:
-  default:
-    external:
-      name: dockernetwork
+  sp:
