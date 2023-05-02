@@ -7,5 +7,5 @@ public class DeletePostCommand : IBaseCommand
 {
     public string? UserName { get; set; }
 
-    public Guid Id => Guid.NewGuid();
+    public Guid Id { get; set; }
 }

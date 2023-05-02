@@ -5,5 +5,5 @@ namespace SP.Commands.Application.Commands;
 
 public class LikePostCommand : IBaseCommand
 {
-    public Guid Id => Guid.NewGuid();
+    public Guid Id {get; set; }
 }
