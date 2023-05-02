@@ -48,7 +48,7 @@ public class PostAggregate : AggregateRoot
 
     public override void CommitChanges()
     { 
-        foreach (var @event in _events)
+        foreach (var @event in Events)
         {
             var eventType = @event.GetType().Name;
 
@@ -70,7 +70,7 @@ public class PostAggregate : AggregateRoot
 
                         if(messageUpdatedEvent is null) throw new NullReferenceException();
 
-                        UpdateMessage(messageUpdatedEvent.Message);
+                        UpdateMessage(messageUpdatedEvent.Message, false);
                     break;
                 
                 case nameof(PostDeletedEvent):
@@ -78,7 +78,7 @@ public class PostAggregate : AggregateRoot
 
                         if(postDeletedEvent is null) throw new NullReferenceException();
 
-                        Delete();
+                        Delete(false);
                     break;
 
                 case nameof(PostLikedEvent):
@@ -86,7 +86,7 @@ public class PostAggregate : AggregateRoot
 
                         if(postLikedEvent is null) throw new NullReferenceException();
 
-                        LikePost();
+                        LikePost(false);
                     break;
 
                 case nameof(PostCommentAddedEvent):
@@ -94,7 +94,7 @@ public class PostAggregate : AggregateRoot
 
                         if(postCommentAddedEvent is null) throw new NullReferenceException();
 
-                        AddComment(postCommentAddedEvent.Comment, postCommentAddedEvent.UserName);
+                        AddComment(postCommentAddedEvent.Comment, postCommentAddedEvent.UserName, false);
                     break;
 
                 case nameof(PostCommentUpdatedEvent):
@@ -102,14 +102,14 @@ public class PostAggregate : AggregateRoot
 
                         if(postCommentUpdatedEvent is null) throw new NullReferenceException();
 
-                        UpdateComment(postCommentUpdatedEvent.CommentId, postCommentUpdatedEvent.Comment, postCommentUpdatedEvent.UserName);
+                        UpdateComment(postCommentUpdatedEvent.CommentId, postCommentUpdatedEvent.Comment, postCommentUpdatedEvent.UserName, false);
                     break;
                 case nameof(PostCommentRemovedEvent):
                         var postCommentRemovedEvent = @event as PostCommentRemovedEvent;
 
                         if(postCommentRemovedEvent is null) throw new NullReferenceException();
 
-                        RemoveComment(postCommentRemovedEvent.CommentId);
+                        RemoveComment(postCommentRemovedEvent.CommentId, false);
                     break;
             }
         }
@@ -124,40 +124,41 @@ public class PostAggregate : AggregateRoot
         ClearEvents();
     }
 
-    public void UpdateMessage(string? message)
+    public void UpdateMessage(string? message, bool isNew = true)
     {
         if(!_isActive) return;
 
         Message = message;
 
-        AddEvent(new MessageUpdatedEvent()
-        {
-            Id = Id,
-            Message = message
-        });
+        if(isNew)
+            AddEvent(new MessageUpdatedEvent()
+            {
+                Id = Id,
+                Message = message
+            });
     } 
     
-    public void LikePost()
+    public void LikePost(bool isNew = true)
     {
         Likes++;
-
-        AddEvent(new PostLikedEvent()
-        {
-            Id = Id
-        });
+        if(isNew)
+            AddEvent(new PostLikedEvent()
+            {
+                Id = Id
+            });
     }
 
-    public void Delete()
+    public void Delete(bool isNew = true)
     {
         _isActive = false;
-
-        AddEvent(new PostDeletedEvent()
-        {
-            Id = Id
-        });
+        if(isNew)
+            AddEvent(new PostDeletedEvent()
+            {
+                Id = Id
+            });
     }
 
-    public void AddComment(string? message, string? userName)
+    public void AddComment(string? message, string? userName, bool isNew = true)
     {
         var comment = new PostComment() 
         {
@@ -177,27 +178,28 @@ public class PostAggregate : AggregateRoot
         });
     }
 
-    public void RemoveComment(Guid commentId)
+    public void RemoveComment(Guid commentId, bool isNew = true)
     {
         _comments.RemoveAll(f => f.Id == commentId);
-
-        AddEvent(new PostCommentRemovedEvent()
-        {
-            CommentId = commentId
-        });
+        if(isNew)
+            AddEvent(new PostCommentRemovedEvent()
+            {
+                CommentId = commentId
+            });
     }
 
-    public void UpdateComment(Guid commentId, string? message, string? userName)
+    public void UpdateComment(Guid commentId, string? message, string? userName, bool isNew = true)
     {
         var comment = _comments.First(f => f.Id == commentId);
 
         comment.Message = message;
 
-        AddEvent(new PostCommentUpdatedEvent()
-        {
-            Comment = message,
-            CommentId = commentId,
-            UserName = userName
-        });
+        if(isNew)
+            AddEvent(new PostCommentUpdatedEvent()
+            {
+                Comment = message,
+                CommentId = commentId,
+                UserName = userName
+            });
      }
 }

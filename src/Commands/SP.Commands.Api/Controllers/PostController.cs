@@ -52,6 +52,7 @@ public class PostController : ControllerBase
     [HttpPost("{postid}/comment")]
     public async Task<IActionResult> AddCommentAsync(Guid postid, AddCommentCommand command)
     {
+        command.Id = postid;
         await _sender.Send(command);
 
         return Ok(new BaseResponse(){ 
