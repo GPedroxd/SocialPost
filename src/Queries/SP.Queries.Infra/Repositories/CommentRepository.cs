@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using SP.Queries.Domain.Entities;
-using SP.Queries.Domain.Repositories;
+using SP.Queries.Application.Entities;
+using SP.Queries.Application.Repositories;
 using SP.Queries.Infra.DataAcess;
 
 namespace SP.Queries.Infra.Repositories;
@@ -41,6 +41,17 @@ public class CommentRepository : ICommentRepository
         using var context = _contextFactory.CreateDbContext();
 
         return await context.Comments.FirstOrDefaultAsync(f => f.CommentId == commentId);
+    }
+
+    public async Task<List<CommentEntity>> GetCommentsByPostIdAsync(Guid postId)
+    {
+        using var context = _contextFactory.CreateDbContext();
+
+        return await context.Comments
+            .AsNoTracking()
+            .Where(w => w.PostId == postId)
+                .OrderBy(o => o.CommentDate)
+                .ToListAsync();
     }
 
     public async Task UpdateAsync(CommentEntity comment)

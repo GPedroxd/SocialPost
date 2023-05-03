@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using SP.Queries.Domain.Entities;
-using SP.Queries.Domain.Repositories;
+using SP.Queries.Application.Entities;
+using SP.Queries.Application.Repositories;
 using SP.Queries.Infra.DataAcess;
 
 namespace SP.Queries.Infra.Repositories;
@@ -35,17 +35,17 @@ public class PostRepository : IPostRepository
         _ = await context.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<PostEntity>> GetAsync()
+    public async Task<List<PostEntity>> GetAsync()
     {
         using var context = _contextFactory.CreateDbContext();
 
         return await context.Posts
         .AsNoTracking()
-        .Include( p => p.Comments)
+        .OrderByDescending(o => o.Dateposted)
         .ToListAsync();
     }
 
-    public async Task<IEnumerable<PostEntity>> GetByAuthorAsync(string author)
+    public async Task<List<PostEntity>> GetByAuthorAsync(string author)
     {
         using var context = _contextFactory.CreateDbContext();
 
@@ -56,7 +56,7 @@ public class PostRepository : IPostRepository
         .ToListAsync();
     }
 
-    public async Task<IEnumerable<PostEntity>> GetByCommentAsync(int likes)
+    public async Task<List<PostEntity>> GetByCommentAsync(int likes)
     {
         using var context = _contextFactory.CreateDbContext();
 
@@ -74,7 +74,7 @@ public class PostRepository : IPostRepository
         return await context.Posts.Include( p => p.Comments).FirstOrDefaultAsync(f => f.PostId == postId);
     }
 
-    public async Task<IEnumerable<PostEntity>> GetByLikesAsync(int likes)
+    public async Task<List<PostEntity>> GetByLikesAsync(int likes)
     {
         using var context = _contextFactory.CreateDbContext();
 

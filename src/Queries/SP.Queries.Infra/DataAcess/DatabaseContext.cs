@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using SP.Queries.Domain.Entities;
+using SP.Queries.Application.Entities;
 
 namespace SP.Queries.Infra.DataAcess;
 

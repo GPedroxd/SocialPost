@@ -1,6 +1,6 @@
 using SP.Common.Events;
-using SP.Queries.Domain.Entities;
-using SP.Queries.Domain.Repositories;
+using SP.Queries.Application.Repositories;
+using SP.Queries.Application.Entities;
 
 namespace SP.Queries.Infra.Handlers;
 

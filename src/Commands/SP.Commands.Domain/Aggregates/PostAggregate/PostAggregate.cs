@@ -181,6 +181,7 @@ public class PostAggregate : AggregateRoot
     public void RemoveComment(Guid commentId, bool isNew = true)
     {
         _comments.RemoveAll(f => f.Id == commentId);
+        
         if(isNew)
             AddEvent(new PostCommentRemovedEvent()
             {

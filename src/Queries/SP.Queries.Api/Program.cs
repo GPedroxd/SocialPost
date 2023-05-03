@@ -1,7 +1,7 @@
 using Confluent.Kafka;
 using Microsoft.EntityFrameworkCore;
 using SP.Core.Consumers;
-using SP.Queries.Domain.Repositories;
+using SP.Queries.Application.Repositories;
 using SP.Queries.Infra.Consumers;
 using SP.Queries.Infra.DataAcess;
 using SP.Queries.Infra.Handlers;

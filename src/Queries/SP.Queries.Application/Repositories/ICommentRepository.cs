@@ -1,6 +1,6 @@
-using SP.Queries.Domain.Entities;
+using SP.Queries.Application.Entities;
 
-namespace SP.Queries.Domain.Repositories;
+namespace SP.Queries.Application.Repositories;
 
 public interface ICommentRepository
 {
@@ -8,4 +8,5 @@ public interface ICommentRepository
     Task UpdateAsync(CommentEntity comment);
     Task<CommentEntity> GetByIdAsync(Guid commentId);
     Task DeleteAsync(Guid commentId);
+    Task<List<CommentEntity>> GetCommentsByPostIdAsync(Guid postId);
 }

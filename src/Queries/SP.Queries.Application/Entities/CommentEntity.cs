@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
-namespace SP.Queries.Domain.Entities;
+namespace SP.Queries.Application.Entities;
 
 [Table("Comment")]
 public class CommentEntity
@@ -13,7 +13,7 @@ public class CommentEntity
     public DateTime CommentDate { get; set; }
     public string? Comment { get; set; }
     public Guid PostId { get; set; }
-    public bool Edited { get;set; }
+    public bool Edited { get; set; }
     [JsonIgnore]
-    public virtual PostEntity Post { get; set; } = new ();
-} 
+    public virtual PostEntity Post { get; set; } = new();
+}

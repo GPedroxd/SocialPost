@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\SP.Queries.Domain\SP.Queries.Domain.csproj" />
+    <ProjectReference Include="..\SP.Queries.Application\SP.Queries.Application.csproj" />
     <ProjectReference Include="..\..\Common\SP.Common\SP.Common.csproj" />
   </ItemGroup>
 
