@@ -1,6 +1,7 @@
 using Confluent.Kafka;
 using Microsoft.EntityFrameworkCore;
 using SP.Core.Consumers;
+using SP.Queries.Application.Handlers;
 using SP.Queries.Application.Repositories;
 using SP.Queries.Infra.Consumers;
 using SP.Queries.Infra.DataAcess;
@@ -10,7 +11,9 @@ using SP.Queries.Infra.Repositories;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-Action<DbContextOptionsBuilder> configureDbContext = (o => o.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")));
+Action<DbContextOptionsBuilder> configureDbContext = (
+        o => o.UseLazyLoadingProxies()
+            .UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")));
 
 builder.Services.AddDbContext<DatabaseContext>(configureDbContext);
 builder.Services.AddSingleton<DatabaseContextFactory>(new DatabaseContextFactory(configureDbContext));
@@ -24,6 +27,8 @@ builder.Services.AddScoped<IPostRepository, PostRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<IEventHandler, SP.Queries.Infra.Handlers.EventHandler>();
 builder.Services.Configure<ConsumerConfig>(builder.Configuration.GetSection(nameof(ConsumerConfig)));
+
+builder.Services.AddMediatR(m => m.RegisterServicesFromAssemblyContaining<MediatRAssembly>());
 
 builder.Services.AddControllers();
 builder.Services.AddHostedService<ConsumerHostedService>();
