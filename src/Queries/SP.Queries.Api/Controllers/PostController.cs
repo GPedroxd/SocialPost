@@ -29,7 +29,7 @@ public class PostController : ControllerBase
     {
         var command = new GetPostByIdQuery()
         {
-            Id = postid
+            PostId = postid
         };
 
         var response = await _serder.Send(command);
